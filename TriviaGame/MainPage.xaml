@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:TriviaGame.ViewModels"
+             x:Class="TriviaGame.MainPage"
+             x:DataType="viewmodel:MainViewModel">
+
+    <Grid RowDefinitions="*">
+        <ActivityIndicator 
+            IsRunning="{Binding IsLoading}"
+            VerticalOptions="Center"
+            HorizontalOptions="Center"/>
+
+        <Grid
+            Padding="16"
+            RowDefinitions="Auto,Auto,Auto"
+            RowSpacing="10"
+            IsVisible="{Binding ShowContent}">
+
+            <Label 
+                Text="{Binding Progress}"
+                HorizontalTextAlignment="Center"/>
+
+            <Label 
+                Grid.Row="1"
+                Text="{Binding CurrentQuestion.DecodedQuestion}"
+                FontSize="24"
+                Margin="0,20"/>
+
+            <CollectionView 
+                Grid.Row="2"
+                ItemsSource="{Binding CurrentQuestion.AnswersList}"
+                SelectionMode="Single">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout 
+                        Orientation="Vertical"
+                        ItemSpacing="7" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="{x:Type x:String}">
+                        <Frame>
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer 
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CheckAnswerCommand}"
+                                    CommandParameter="{Binding .}"/>
+                            </Frame.GestureRecognizers>
+                            <Label Text="{Binding .}"/>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+    </Grid>
+
+    
+
+</ContentPage>
